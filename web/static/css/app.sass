@@ -1,0 +1,90 @@
+@charset "utf-8"
+
+@import "utilities/initial-variables"
+
+$family-serif: "Merriweather", serif
+$family-sans-serif: "Rubik", "Helvetica Neue", "Helvetica", sans-serif
+$family-primary: $family-serif
+
+$body-size: 16px
+
+@import "utilities/_all"
+@import "base/_all"
+@import "elements/_all"
+
+@import "components/nav"
+@import "components/menu"
+
+@import "grid/_all"
+@import "layout/_all"
+
+body
+  font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+pre[class*="language-"]
+  padding: 0px !important
+
+.blog-content p
+  letter-spacing: -0.003em
+  font-size: 18px
+  line-height: 1.7
+  text-align: justify
+  margin-top: 0px
+  hyphens: auto
+  work-break: break-word
+
+.blog-content h1
+  font-family: $family-sans-serif
+  font-weight: 700
+  font-size: 1.75rem
+
+.blog-header
+  font-family: $family-sans-serif
+  margin-bottom: 24px
+  text-align: left
+  .title
+    font-weight: 700
+    font-size: 36px
+    letter-spacing: -1.5px
+  .subtitle
+    font-size: 30px
+    margin-top: 6px
+    letter-spacing: -2px
+    color: $grey-light
+
+pre
+  border-radius: 3px
+
+pre code
+  padding: 0px !important
+
+.blog-content .image img
+  border-radius: 3px
+
+.hero-text
+  font-family: $family-sans-serif
+  font-weight: 500
+  font-size: 2.75rem
+  letter-spacing: -0.1rem
+
+.type
+  @extend code
+  font-size: $body-size
+  background: none
+  color: $grey
+  padding: 0px
+
+a.nav-item
+  color: $grey-light
+
+.nav
+  font-family: $family-sans-serif
+
+.button-group a
+  margin-top: 6px
+
+.button-group
+  margin: 6px
+  font-family: $family-sans-serif
