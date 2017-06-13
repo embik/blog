@@ -1,0 +1,13 @@
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-two-thirds is-offset-2">
+        <ul>
+          <%= for post <- @posts do %>
+            <li><a href="<%= post_path(@conn, :post, post.slug) %>"><%= post.title %>: <%= post.subtitle %></a></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

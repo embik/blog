@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= if assigns[:title] do %><%= @title %><% else %><%= gettext "Personal Page of Marvin Beckers" %><% end %> | embik.me</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+
+    <%= render(@view_module, @view_template, assigns) %>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        Typed.new(".type", {
+          stringsElement: document.getElementById('typed-strings'),
+          typeSpeed: 25,
+          backDelay: 1000,
+          loop: null
+        });
+      });
+    </script>
+  </body>
+</html>

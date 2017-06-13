@@ -1,0 +1,25 @@
+<div class="button-group">
+  <a class="button is-light" href="<%= page_path(@conn, :index) %>">
+    <span class="svg"><%= load_svg("core", "home") |> raw %></span>
+    Home
+  </a>
+  <a class="button is-light" href="<%= index_path(@conn, :index) %>">
+    <span class="svg"><%= load_svg("core", "feather") |> raw %></span>
+    Blog
+  </a>
+</div>
+<section class="section">
+  <div class="container content blog-content">
+    <div class="columns">
+      <div class="column is-2">
+      </div>
+      <div class="column is-two-thirds">
+        <div class="blog-header">
+          <h1 class="title"><%= @post.title %></h1>
+          <h2 class="subtitle"><%= @post.subtitle %></h2>
+        </div>
+        <%= raw(@post.text) %>
+      </div>
+    </div>
+  </div>
+</section>
