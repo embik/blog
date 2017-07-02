@@ -2,6 +2,7 @@ defmodule Blog.Cache do
   use GenServer
 
   require Logger
+  alias Blog.Cache.Parser, as: Parser
 
   # Public API
 
@@ -24,11 +25,7 @@ defmodule Blog.Cache do
     get_page(page)
   end
 
-  def update(file) do
-    #case reload(file) do
-      #:ok -> :ok
-      #:err -> :err
-    #end
+  def update(_file) do
     :ok
   end
 
@@ -73,7 +70,7 @@ defmodule Blog.Cache do
   end
 
   defp init_posts(dir, post_table, meta_table) do
-    case read_dir(dir) do
+    case Parser.read_dir(dir) do
       [] -> nil
       posts when is_list(posts) ->
         Enum.each(posts, fn(post) -> insert(post, post_table, meta_table) end)
@@ -87,16 +84,12 @@ defmodule Blog.Cache do
   end
 
   def handle_call({:get_page, page}, _from, state) when is_number(page) do
-    %{meta_table: meta_table} = state
-
-    [{_, post_list}] = :ets.lookup(meta_table, "post_list")
     result = get_page(page, state)
-
     {:reply, result, state}
   end
 
   def handle_call({:get_tag, tag}, _from, state) do
-  
+    {:reply, nil, state}
   end
 
   defp get_page(page, state) do
@@ -126,38 +119,5 @@ defmodule Blog.Cache do
     [{_, post_list}] = :ets.lookup(meta_table, "post_list")
     post_list = post_list ++ [post.slug]
     :ets.insert(meta_table, {"post_list", post_list})
-  end
-
-  defp read_dir(dir) do
-    files = Path.wildcard(dir <> "/*.md")
-    read_dir_rec_helper(files)
-  end
-
-  defp read_dir_rec_helper([]) do [] end
-  defp read_dir_rec_helper([head|tail]) do
-    case read_file(head) do
-      {:ok, result} -> [result] ++ read_dir_rec_helper(tail)
-      _ -> read_dir_rec_helper(tail)
-    end
-  end
-
-  defp read_file(file) do
-    case File.read(file) do
-      {:ok, result} ->
-        [meta, text] = String.split(result, "---", parts: 2)
-        %{"title" => title,
-          "keywords" => keywords,
-          "date" => date} = YamlElixir.read_from_string(meta)
-        date = Timex.parse!(date, "{YYYY}-{0M}-{0D}")
-        slug = gen_slug(title)
-        text = Earmark.as_html!(text)
-        Logger.debug("Loading #{file}\n  Title: #{title}\n  Slug: #{slug}")
-        {:ok, %{slug: slug, file: file, title: title, date: date, keywords: keywords, text: text}}
-      _ -> {:err, nil}
-    end
-  end
-
-  defp gen_slug(title) do
-    String.downcase(title) |> String.replace(~r/[^a-z-0-9 ]+/i, "") |> String.replace(" ", "-")
   end
 end
