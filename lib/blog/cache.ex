@@ -1,12 +1,14 @@
 defmodule Blog.Cache do
   use GenServer
 
+  require Logger
+
   # Public API
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, [
         {:post_table, :post_cache_table},
-        {:file_table, :file_mapping_table},
+        {:meta_table, :meta_table},
         {:post_dir, Application.get_env(:blog, Blog.Endpoint)[:post_folder]}
       ], opts)
   end
@@ -18,28 +20,29 @@ defmodule Blog.Cache do
     end
   end
 
-  def fetch_index do
-    get_index()
+  def fetch_page(page) when is_number(page) do
+    get_page(page)
   end
 
   def update(file) do
-    case reload(file) do
-      :ok -> :ok
-      :err -> :err
-    end
+    #case reload(file) do
+      #:ok -> :ok
+      #:err -> :err
+    #end
+    :ok
   end
 
   defp get(slug) do
     case GenServer.call(__MODULE__, {:get, slug}) do
       [] -> {:not_found}
-      [{_slug, result}] -> {:found, result}
+      result when is_map(result) -> {:found, result}
     end
   end
 
-  defp get_index do
-    case GenServer.call(__MODULE__, {:get_index}) do
-      posts when is_list(posts) -> posts
-      _ -> []
+  defp get_page(page) when is_number(page) do
+    case GenServer.call(__MODULE__, {:get_page, page}) do
+      {posts, pages} when is_list(posts) -> {posts, pages}
+      _ -> {[], 0}
     end
   end
 
@@ -55,83 +58,78 @@ defmodule Blog.Cache do
   def init(args) do
     [
       {:post_table, post_table},
-      {:file_table, file_table},
+      {:meta_table, meta_table},
       {:post_dir, post_dir}
     ] = args
 
-    :ets.new(post_table, [:set, :private, :named_table])
-    :ets.new(file_table, [:set, :private, :named_table])
+    :ets.new(post_table, [:ordered_set, :private, :named_table])
+    :ets.new(meta_table, [:set, :private, :named_table])
 
-    init_posts(post_dir, post_table, file_table)
+    :ets.insert(meta_table, {"post_list", []})
 
-    {:ok, %{post_table: post_table, file_table: file_table, post_dir: post_dir}}
+    init_posts(post_dir, post_table, meta_table)
+
+    {:ok, %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}}
   end
 
-  defp init_posts(dir, post_table, file_table) do
+  defp init_posts(dir, post_table, meta_table) do
     case read_dir(dir) do
       [] -> nil
       posts when is_list(posts) ->
-        Enum.each(posts, fn(post) -> insert(post, post_table, file_table) end)
+        Enum.each(posts, fn(post) -> insert(post, post_table, meta_table) end)
     end
   end
 
   def handle_call({:get, slug}, _from, state) do
     %{post_table: post_table} = state
-    result = :ets.lookup(post_table, slug)
+    [{_, post}] = :ets.lookup(post_table, slug)
+    {:reply, post, state}
+  end
+
+  def handle_call({:get_page, page}, _from, state) when is_number(page) do
+    %{meta_table: meta_table} = state
+
+    [{_, post_list}] = :ets.lookup(meta_table, "post_list")
+    result = get_page(page, state)
+
     {:reply, result, state}
   end
 
-  def handle_call({:reload, file}, _from, state) do
-    case read_file(file) do
-      {:ok, result} ->
-        %{post_table: post_table, file_table: file_table} = state
-        update_file_mapping(result, post_table, file_table)
-        insert(result, post_table, file_table)
-        {:reply, :ok, state}
-      {:err, nil} ->
-        {:reply, :err, state}
-    end
+  def handle_call({:get_tag, tag}, _from, state) do
+  
   end
 
-  def handle_call({:get_index}, _from, state) do
-    %{post_table: post_table} = state
+  defp get_page(page, state) do
+    %{post_table: post_table, meta_table: meta_table} = state
+    [{_, post_list}] = :ets.lookup(meta_table, "post_list")
+    post_list = Enum.reverse(post_list)
+    list_length = length(post_list)
+    start_pos = (page - 1) * 5
+    pages = list_length |> div(5) |> Kernel.+(1)
+    posts =
+      case page <= pages do
+        true -> Enum.drop(post_list, start_pos) |> Enum.take(5) |> fetch_posts(post_table)
+        false -> []
+      end
 
-    posts = :ets.match(post_table, {:"$1", :"_"})
-      |> uncrustify_slugs
-      |> Enum.reverse
-      |> fetch_posts(post_table)
-
-    {:reply, posts, state}
-  end
-
-  defp update_file_mapping(post, post_table, file_table) do
-    case :ets.lookup(file_table, post.file) do
-      [{_file, slug}] ->
-        unless post.slug == slug do
-          :ets.delete(post_table, slug)
-        end
-      _ -> nil
-    end
-  end
-
-  defp uncrustify_slugs([]) do [] end
-  defp uncrustify_slugs([head|tail]) when is_list(head) do
-    [Enum.at(head, 0)] ++ uncrustify_slugs(tail)
+    {posts, pages}
   end
 
   defp fetch_posts([], _post_table) do [] end
   defp fetch_posts([slug|tail], post_table) do
-    [{_, %{slug: slug, title: title, subtitle: subtitle}}] = :ets.lookup(post_table, slug)
-    [%{slug: slug, title: title, subtitle: subtitle}] ++ fetch_posts(tail, post_table)
+    [{_, post}] = :ets.lookup(post_table, slug)
+    [post] ++ fetch_posts(tail, post_table)
   end
 
-  defp insert(post = %{slug: slug, file: file, title: _, subtitle: _, text: _}, post_table, file_table) do
-    :ets.insert(post_table, {slug, post})
-    :ets.insert(file_table, {file, slug})
+  defp insert(post, post_table, meta_table) do
+    :ets.insert(post_table, {post.slug, post})
+    [{_, post_list}] = :ets.lookup(meta_table, "post_list")
+    post_list = post_list ++ [post.slug]
+    :ets.insert(meta_table, {"post_list", post_list})
   end
 
   defp read_dir(dir) do
-    files = Path.wildcard(dir <> "/*.md") |> Enum.reverse
+    files = Path.wildcard(dir <> "/*.md")
     read_dir_rec_helper(files)
   end
 
@@ -146,10 +144,15 @@ defmodule Blog.Cache do
   defp read_file(file) do
     case File.read(file) do
       {:ok, result} ->
-        [title, subtitle, text] = String.split(result, "\n", parts: 3)
+        [meta, text] = String.split(result, "---", parts: 2)
+        %{"title" => title,
+          "keywords" => keywords,
+          "date" => date} = YamlElixir.read_from_string(meta)
+        date = Timex.parse!(date, "{YYYY}-{0M}-{0D}")
         slug = gen_slug(title)
-        text = Earmark.as_html!(text, %Earmark.Options{code_class_prefix: "language-"})
-        {:ok, %{slug: slug, file: file, title: title, subtitle: subtitle, text: text}}
+        text = Earmark.as_html!(text)
+        Logger.debug("Loading #{file}\n  Title: #{title}\n  Slug: #{slug}")
+        {:ok, %{slug: slug, file: file, title: title, date: date, keywords: keywords, text: text}}
       _ -> {:err, nil}
     end
   end

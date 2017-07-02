@@ -1,5 +1,5 @@
 defmodule Blog.Cache.Monitor do
-  use ExFSWatch, dirs: ["/home/embik/Ablage/blog"]
+  use ExFSWatch, dirs: [Application.get_env(:blog, Blog.Endpoint)[:post_folder]]
 
   def callback(:stop) do
     IO.puts("STOP")
