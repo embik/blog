@@ -1,4 +1,6 @@
 defmodule Blog.Cache.Parser do
+  alias Blog.Cache.Models.Post
+
   def read_dir(dir) do
     files = Path.wildcard(dir <> "/*.md")
     read_dir_rec_helper(files)
@@ -20,11 +22,17 @@ defmodule Blog.Cache.Parser do
         %{"title" => title,
           "keywords" => keywords,
           "date" => date} = YamlElixir.read_from_string(meta)
-        date = Timex.parse!(date, "{YYYY}-{0M}-{0D}")
-        slug = gen_slug(title)
-        text = Earmark.as_html!(content)
 
-        {:ok, %{slug: slug, file: file, title: title, date: date, keywords: keywords, text: text}}
+        post = %Post{
+          slug: gen_slug(title),
+          title: title,
+          file: file,
+          date: Timex.parse!(date, "{YYYY}-{0M}-{0D}"),
+          keywords: keywords,
+          text: Earmark.as_html!(content)
+        }
+
+        {:ok, post}
       _ -> {:err, nil}
     end
   end
