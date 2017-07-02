@@ -60,22 +60,18 @@ defmodule Blog.Cache do
       {:post_dir, post_dir}
     ] = args
 
-    :ets.new(post_table, [:ordered_set, :private, :named_table])
-    :ets.new(meta_table, [:set, :private, :named_table])
+    Db.init(%{post_table: post_table, meta_table: meta_table})
 
-    :ets.insert(meta_table, {"post_list", []})
-
-    init_posts(post_dir, post_table, meta_table)
-
-    {:ok, %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}}
-  end
-
-  defp init_posts(dir, post_table, meta_table) do
-    case Parser.read_dir(dir) do
+    case Parser.read_dir(post_dir) do
       [] -> nil
       posts when is_list(posts) ->
-        Enum.each(posts, fn(post) -> Db.insert(post, %{post_table: post_table, meta_table: meta_table}) end)
+        Enum.each(
+          posts,
+          fn(post) -> Db.insert(post, %{post_table: post_table, meta_table: meta_table}) end
+        )
     end
+
+    {:ok, %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}}
   end
 
   def handle_call({:get, slug}, _from, state) do

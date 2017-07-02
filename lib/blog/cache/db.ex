@@ -3,6 +3,14 @@ defmodule Blog.Cache.Db do
 
   @post_list "post_list"
 
+  def init(state) do
+    %{post_table: post_table, meta_table: meta_table} = state
+    :ets.new(post_table, [:set, :private, :named_table])
+    :ets.new(meta_table, [:set, :private, :named_table])
+
+    :ets.insert(meta_table, {@post_list, []})
+  end
+
   def get(slug, state) do
     %{post_table: post_table} = state
     case :ets.lookup(post_table, slug) do
