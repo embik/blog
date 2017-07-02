@@ -17,10 +17,11 @@ defmodule Blog.Router do
   scope "/", Blog do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", IndexController, :index
     get "/imprint", PageController, :imprint
     get "/foss-licenses", PageController, :licenses
-    get "/blog", IndexController, :index
     get "/:slug", PostController, :post
+    get "/page/:page", IndexController, :page
+    get "/tag/:tag", IndexController, :tag
   end
 end
