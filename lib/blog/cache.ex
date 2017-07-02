@@ -2,7 +2,8 @@ defmodule Blog.Cache do
   use GenServer
 
   require Logger
-  alias Blog.Cache.Parser, as: Parser
+  alias Blog.Cache.Parser
+  alias Blog.Cache.Db
 
   # Public API
 
@@ -73,51 +74,21 @@ defmodule Blog.Cache do
     case Parser.read_dir(dir) do
       [] -> nil
       posts when is_list(posts) ->
-        Enum.each(posts, fn(post) -> insert(post, post_table, meta_table) end)
+        Enum.each(posts, fn(post) -> Db.insert(post, %{post_table: post_table, meta_table: meta_table}) end)
     end
   end
 
   def handle_call({:get, slug}, _from, state) do
-    %{post_table: post_table} = state
-    [{_, post}] = :ets.lookup(post_table, slug)
-    {:reply, post, state}
+    {_, result} = Db.get(slug, state)
+    {:reply, result, state}
   end
 
   def handle_call({:get_page, page}, _from, state) when is_number(page) do
-    result = get_page(page, state)
+    result = Db.get_page(page, state)
     {:reply, result, state}
   end
 
   def handle_call({:get_tag, tag}, _from, state) do
     {:reply, nil, state}
-  end
-
-  defp get_page(page, state) do
-    %{post_table: post_table, meta_table: meta_table} = state
-    [{_, post_list}] = :ets.lookup(meta_table, "post_list")
-    post_list = Enum.reverse(post_list)
-    list_length = length(post_list)
-    start_pos = (page - 1) * 5
-    pages = list_length |> div(5) |> Kernel.+(1)
-    posts =
-      case page <= pages do
-        true -> Enum.drop(post_list, start_pos) |> Enum.take(5) |> fetch_posts(post_table)
-        false -> []
-      end
-
-    {posts, pages}
-  end
-
-  defp fetch_posts([], _post_table) do [] end
-  defp fetch_posts([slug|tail], post_table) do
-    [{_, post}] = :ets.lookup(post_table, slug)
-    [post] ++ fetch_posts(tail, post_table)
-  end
-
-  defp insert(post, post_table, meta_table) do
-    :ets.insert(post_table, {post.slug, post})
-    [{_, post_list}] = :ets.lookup(meta_table, "post_list")
-    post_list = post_list ++ [post.slug]
-    :ets.insert(meta_table, {"post_list", post_list})
   end
 end
