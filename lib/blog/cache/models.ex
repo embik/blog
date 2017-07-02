@@ -7,4 +7,7 @@ defmodule Blog.Cache.Models do
       keywords: [],
       text: nil
   end
+
+  def is_post?(%Post{}), do: true
+  def is_post?(_), do: false
 end
