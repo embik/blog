@@ -17,7 +17,7 @@ defmodule Blog.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Blog, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :exfswatch]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :exfswatch, :yaml_elixir, :timex]]
   end
 
   # Specifies which paths to compile per environment.
@@ -35,6 +35,8 @@ defmodule Blog.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:earmark, "~> 1.2.2"},
-     {:exfswatch, "~> 0.4.2"}]
+     {:exfswatch, "~> 0.4.2"},
+     {:yaml_elixir, "~> 1.3.0"},
+     {:timex,  "~> 3.1.17"}]
   end
 end
