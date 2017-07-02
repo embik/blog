@@ -3,17 +3,19 @@
 @import "utilities/initial-variables"
 
 $family-serif: "Merriweather", serif
-$family-sans-serif: "Rubik", "Helvetica Neue", "Helvetica", sans-serif
+$family-sans-serif: "Open Sans", "Helvetica Neue", "Helvetica", sans-serif
+$family-monospace: "Monaco", monospace
 $family-primary: $family-serif
 
-$body-size: 16px
+$body-size: 18px
 
 @import "utilities/_all"
 @import "base/_all"
 @import "elements/_all"
 
 @import "components/nav"
-@import "components/menu"
+@import "components/message"
+@import "components/pagination"
 
 @import "grid/_all"
 @import "layout/_all"
@@ -26,14 +28,18 @@ body
 pre[class*="language-"]
   padding: 0px !important
 
-.blog-content p
-  letter-spacing: -0.003em
-  font-size: 18px
-  line-height: 1.7
-  text-align: justify
-  margin-top: 0px
-  hyphens: auto
-  work-break: break-word
+.blog-content
+  p
+    color: rgb(58, 65, 69)
+    font-size: 18px
+    line-height: 1.75
+    letter-spacing: 0.1px
+    margin-top: 0px
+    hyphens: auto
+    work-break: break-word
+    a
+      color: inherit
+      text-decoration: underline
 
 .blog-content h1
   font-family: $family-sans-serif
@@ -45,20 +51,24 @@ pre[class*="language-"]
   margin-bottom: 24px
   text-align: left
   .title
+    color: rgb(63, 63, 63)
     font-weight: 700
     font-size: 36px
-    letter-spacing: -1.5px
-  .subtitle
-    font-size: 30px
-    margin-top: 6px
     letter-spacing: -2px
-    color: $grey-light
+    margin-bottom: 0px
+  .meta
+    color: $grey
+    a
+      color: inherit
+      text-decoration: underline
 
 pre
   border-radius: 3px
 
 pre code
   padding: 0px !important
+  font-size: 14px
+  tab-size: 4
 
 .blog-content .image img
   border-radius: 3px
@@ -88,3 +98,61 @@ a.nav-item
 .button-group
   margin: 6px
   font-family: $family-sans-serif
+
+.hero-body
+  .title
+    font-family: $family-sans-serif
+    font-weight: 700
+    letter-spacing: -1.5px
+    margin-bottom: 16px
+  .subtitle
+    font-size: $body-size
+
+.tabs
+  font-family: $family-sans-serif
+
+.hero.is-light .tabs a
+  color: $grey
+
+.svg
+  line-height: 0
+  margin-right: 6px
+
+.nav
+  background: none
+
+.pagination-link
+  border-color: transparent
+.pagination-link.is-current
+  background-color: whitesmoke
+  border-color: whitesmoke
+  color: $grey-light
+
+.content h1
+  font-family: $family-sans-serif
+  font-weight: 700
+  letter-spacing: -1.5px
+
+.content h2
+  font-family: $family-sans-serif
+  font-weight: 700
+  letter-spacing: -1.25px
+  a
+    color: inherit
+  small
+    color: $grey-light
+
+#cookie-notification
+  position: fixed
+  bottom: 0px
+  z-index: 100
+  width: 100%
+  background: $blue
+  color: $white
+  display: block
+  line-height: 40px
+  padding-left: 4px
+  font-family: $family-sans-serif
+  font-size: 0.75em
+  .button
+    vertical-align: baseline
