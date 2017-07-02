@@ -1,15 +1,15 @@
 defmodule Blog.PageController do
   use Blog.Web, :controller
 
-  def index(conn, _params) do
-    render(conn, "index.html")
-  end
-
   def imprint(conn, _params) do
-    render(conn, "imprint.html")
+    conn
+    |> assign(:title, "Imprint")
+    |> render("imprint.html")
   end
 
   def licenses(conn, _params) do
-    render(conn, "licenses.html")
+    conn
+    |> assign(:title, "Lizenzen")
+    |> render("licenses.html")
   end
 end

@@ -13,7 +13,7 @@ defmodule Blog.PostController do
 
     case Blog.Cache.fetch(slug) do
       post when is_map(post) ->
-        render(conn, post: post, title: post.title <> ": " <> post.subtitle)
+        render(conn, post: post, title: "#{post.title}")
       nil ->
         conn |> redirect(to: index_path(conn, :index)) |> halt
     end
