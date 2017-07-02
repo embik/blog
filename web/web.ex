@@ -45,7 +45,7 @@ defmodule Blog.Web do
       import Blog.ErrorHelpers
       import Blog.Gettext
 
-      import Blog.Helpers
+      import Timex, only: [format!: 2]
     end
   end
 

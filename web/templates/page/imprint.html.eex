@@ -1,0 +1,17 @@
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <div class="content">
+          <h1><%= gettext("Imprint") %></h1>
+          <p><%= gettext("Responsible for this website (§ 5 TMG, German law)") %>:</p>
+          <p>Marvin Beckers<br>
+            Jülicher Str. 138<br>
+            52070 Aachen</p>
+          <p><%= gettext("Contact") %>: <a href="mailto:mail@embik.me">mail@embik.me</a></p>
+          <p><%= gettext("Responsible for content on this website (§ 55 Abs. 2 RStV, German law)") %>: Marvin Beckers</p>
+          <h1><%= gettext("Data Privacy Statement") %></h1>
+        </div>
+      </div>
+  </div>
+</section>

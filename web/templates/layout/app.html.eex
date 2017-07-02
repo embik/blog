@@ -5,23 +5,104 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><%= if assigns[:title] do %><%= @title %><% else %><%= gettext "Personal Page of Marvin Beckers" %><% end %> | embik.me</title>
+    <meta name="author" content="Marvin Beckers">
+    <meta name="description" content="Personal blog on computers, FOSS and Linux.">
+    <meta name="page-topic" content="Blog">
+
+    <title><%= if assigns[:title] do %><%= @title %><% else %><%= gettext("Personal blog on computers, FOSS and Linux.") %> | Marvin Beckers<% end %> | embik.me</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-
-    <%= render(@view_module, @view_template, assigns) %>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        Typed.new(".type", {
-          stringsElement: document.getElementById('typed-strings'),
-          typeSpeed: 25,
-          backDelay: 1000,
-          loop: null
-        });
-      });
+    <header class="hero is-light is-medium">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <a href="<%= index_path(@conn, :index) %>"><h1 class="title">Marvin Beckers</h1></a>
+          <h2 class="subtitle"><%= gettext("Personal blog on computers, FOSS and Linux.") %></h2>
+          <nav class="button-group">
+            <a class="button" href="https://keybase.io/embik">
+              <span class="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              Keybase
+            </a>
+            <a class="button" href="mailto:mail@embik.me">
+              <span class="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="4"/>
+                  <path d="M16 12v1a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/>
+                </svg>
+              </span>
+              E-Mail
+            </a>
+            <a class="button" href="https://github.com/embik">
+              <span class="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                </svg>
+              </span>
+              GitHub
+            </a>
+            <a class="button" href="https://xing.com/profile/Marvin_Beckers">
+              <span class="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                  <circle cx="12" cy="7" r="4" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                </svg>
+              </span>
+              Xing
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main role="main">
+      <%= render(@view_module, @view_template, assigns) %>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <nav class="nav">
+          <div class="nav-center">
+            <a class="nav-item" href="<%= page_path(@conn, :imprint) %>"><%= gettext("Imprint") %></a>
+            <a class="nav-item" href="<%= page_path(@conn, :licenses) %>"><%= gettext("OSS Licenses") %></a>
+          </div>
+        </nav>
+      </div>
+    </footer>
+    <script type="text/javascript">
+      if (document.cookie.indexOf("cookie-agreement=") < 0) {
+        var div = document.createElement("div");
+        div.id = "cookie-notification";
+        var content = document.createTextNode("<%= gettext("embik.me uses cookies to ensure general functionality. By browsing this page you agree to the usage of cookies.") %> ");
+        div.appendChild(content);
+        var link1 = document.createElement("a");
+        link1.className = "button is-small is-inverted is-outlined is-info";
+        link1.innerHTML = "Okay";
+        link1.onclick = function() {
+          var date = new Date();
+          date.setTime(date.getTime() + (365*24*60*60*1000));
+          document.cookie = "cookie-agreement=yes; expires=" + date.toUTCString();
+          var notif = document.getElementById("cookie-notification");
+          notif.style.display = "none";
+        };
+        div.appendChild(link1);
+        var link2 = document.createElement("a");
+        link2.className = "button is-small is-inverted is-outlined is-info";
+        link2.innerHTML = "<%= gettext("See Privacy Statement") %>";
+        div.appendChild(document.createTextNode(" "));
+        div.appendChild(link2);
+        document.body.appendChild(div);
+      }
     </script>
+    <noscript>
+      <div id="cookie-notification">
+        <%= gettext("embik.me uses cookies to ensure general functionality. By browsing this page you agree to the usage of cookies.") %>
+        <a class="button is-small is-inverted is-outlined is-info"><%= gettext("See Privacy Statement") %></a>
+      </div>
+    </noscript>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

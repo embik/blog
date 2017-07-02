@@ -1,13 +1,13 @@
-<section class="section">
-  <div class="container">
-    <div class="columns">
-      <div class="column is-two-thirds is-offset-2">
-        <ul>
-          <%= for post <- @posts do %>
-            <li><a href="<%= post_path(@conn, :post, post.slug) %>"><%= post.title %>: <%= post.subtitle %></a></li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+<%= for post <- @posts do %>
+  <%= render(Blog.PostView, "post.html", conn: @conn, post: post) %>
+<% end %>
+
+<aside class="section">
+  <nav class="pagination is-centered">
+    <ul class="pagination-list">
+    <%= for i <- Enum.to_list(1..@pages) do %>
+      <li><a class="pagination-link <%= if i == @page do %>is-current<% end %>" href="<%= if i != 1 do %><%= index_path(@conn, :page, i) %><% else %><%= index_path(@conn, :index) %><% end %>"><%= i %></a></li>
+    <% end %>
+    </ul>
+  </nav>
+</aside>
