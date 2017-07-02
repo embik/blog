@@ -10,26 +10,54 @@
 msgid ""
 msgstr ""
 
-#: web/templates/page/index.html.eex:9
-msgid "Computer Science Student"
-msgstr ""
-
-#: web/templates/page/index.html.eex:36
+#: web/templates/layout/app.html.eex:69 web/templates/page/imprint.html.eex:6
 msgid "Imprint"
 msgstr ""
 
-#: web/templates/page/index.html.eex:11
-msgid "Linux/UNIX Administrator"
-msgstr ""
-
-#: web/templates/page/index.html.eex:37
+#: web/templates/layout/app.html.eex:70
 msgid "OSS Licenses"
 msgstr ""
 
-#: web/templates/page/index.html.eex:10
-msgid "Software Developer"
+#: web/templates/page/imprint.html.eex:11
+msgid "Contact"
 msgstr ""
 
-#: web/templates/layout/app.html.eex:8
-msgid "Personal Page of Marvin Beckers"
+#: web/templates/page/imprint.html.eex:13
+msgid "Data Privacy Statement"
+msgstr ""
+
+#: web/templates/layout/app.html.eex:12 web/templates/layout/app.html.eex:21
+msgid "Personal blog on computers, FOSS and Linux."
+msgstr ""
+
+#: web/templates/page/imprint.html.eex:12
+msgid "Responsible for content on this website (§ 55 Abs. 2 RStV, German law)"
+msgstr ""
+
+#: web/templates/page/imprint.html.eex:7
+msgid "Responsible for this website (§ 5 TMG, German law)"
+msgstr ""
+
+#: web/templates/layout/app.html.eex:78
+msgid "See Privacy Statement"
+msgstr ""
+
+#: web/templates/page/licenses.html.eex:7
+msgid "Thank you <3"
+msgstr ""
+
+#: web/templates/page/licenses.html.eex:6
+msgid "This blog would not be possible without the massive amount of work other developers put into FOSS (Free & Open Source Software) projects. To comply with the licenses of the various projects, see the list of components and their licenses below."
+msgstr ""
+
+#: web/templates/layout/app.html.eex:76
+msgid "embik.me uses cookies to ensure general functionality. By browsing this page you agree to the usage of cookies."
+msgstr ""
+
+#: web/templates/post/post.html.eex:9
+msgid "published on"
+msgstr ""
+
+#: web/templates/post/post.html.eex:10
+msgid "tagged with"
 msgstr ""
