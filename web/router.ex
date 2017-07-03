@@ -7,7 +7,7 @@ defmodule Blog.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Blog.Plug.Locale, "en"
+    #plug Blog.Plug.Locale, "en"
   end
 
   pipeline :api do
@@ -23,5 +23,6 @@ defmodule Blog.Router do
     get "/:slug", PostController, :post
     get "/page/:page", IndexController, :page
     get "/tag/:tag", IndexController, :tag
+    get "/tag/:tag/page/:page", IndexController, :tag_page
   end
 end

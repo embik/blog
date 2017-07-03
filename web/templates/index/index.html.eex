@@ -6,7 +6,7 @@
   <nav class="pagination is-centered">
     <ul class="pagination-list">
     <%= for i <- Enum.to_list(1..@pages) do %>
-      <li><a class="pagination-link <%= if i == @page do %>is-current<% end %>" href="<%= if i != 1 do %><%= index_path(@conn, :page, i) %><% else %><%= index_path(@conn, :index) %><% end %>"><%= i %></a></li>
+      <li><a class="pagination-link <%= if i == @page do %>is-current<% end %>" href="<%= if @page_atom == :page do %><%= index_path(@conn, @page_atom, i) %><% else %><%= index_path(@conn, @page_atom, @tag, i) %><% end %>"><%= i %></a></li>
     <% end %>
     </ul>
   </nav>

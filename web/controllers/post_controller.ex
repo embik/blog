@@ -11,10 +11,10 @@ defmodule Blog.PostController do
       conn |> redirect(to: post_path(conn, :post, lowercase_slug)) |> halt
     end
 
-    case Blog.Cache.fetch(slug) do
-      post when is_map(post) ->
+    case Blog.Cache.get(slug) do
+      {:found, post} ->
         render(conn, post: post, title: "#{post.title}")
-      nil ->
+      _ ->
         conn |> redirect(to: index_path(conn, :index)) |> halt
     end
   end

@@ -15,13 +15,6 @@ defmodule Blog.Cache do
       ], opts)
   end
 
-  def fetch(slug) do
-    case get(slug) do
-      {:not_found} -> nil
-      {:found, result} -> result
-    end
-  end
-
   def fetch_page(page) when is_number(page) do
     get_page(page)
   end
@@ -30,15 +23,22 @@ defmodule Blog.Cache do
     :ok
   end
 
-  defp get(slug) do
+  def get(slug) do
     case GenServer.call(__MODULE__, {:get, slug}) do
       [] -> {:not_found}
       result when is_map(result) -> {:found, result}
     end
   end
 
-  defp get_page(page) when is_number(page) do
+  def get_page(page) when is_number(page) do
     case GenServer.call(__MODULE__, {:get_page, page}) do
+      {posts, pages} when is_list(posts) -> {posts, pages}
+      _ -> {[], 0}
+    end
+  end
+
+  def get_tag_page(tag, page) when is_number(page) do
+    case GenServer.call(__MODULE__, {:get_tag_page, tag, page}) do
       {posts, pages} when is_list(posts) -> {posts, pages}
       _ -> {[], 0}
     end
@@ -81,6 +81,11 @@ defmodule Blog.Cache do
 
   def handle_call({:get_page, page}, _from, state) when is_number(page) do
     result = Db.get_page(page, state)
+    {:reply, result, state}
+  end
+
+  def handle_call({:get_tag_page, tag, page}, _from, state) when is_number(page) do
+    result = Db.get_tag_page(tag, page, state)
     {:reply, result, state}
   end
 

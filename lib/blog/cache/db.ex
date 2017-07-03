@@ -37,6 +37,29 @@ defmodule Blog.Cache.Db do
     {posts, pages}
   end
 
+  def get_tag_page(tag, page, state) when is_number(page) do
+    %{meta_table: meta_table} = state
+
+    post_list =
+      case :ets.lookup(meta_table, tag) do
+        [{_, post_list}] when is_list(post_list) -> Enum.reverse(post_list)
+        _ -> []
+      end
+
+    list_length = length(post_list)
+
+    start_pos = (page - 1) * 5
+    pages = list_length |> div(5) |> Kernel.+(1)
+
+    posts =
+      case page <= pages do
+        true -> Enum.drop(post_list, start_pos) |> Enum.take(5) |> fetch_posts(state)
+        false -> []
+      end
+
+    {posts, pages}
+  end
+
   defp fetch_posts([], _state), do: []
   defp fetch_posts([slug|tail], state) do
     case get(slug, state) do
@@ -50,8 +73,19 @@ defmodule Blog.Cache.Db do
       %{post_table: post_table, meta_table: meta_table} = state
       [{_, post_list}] = :ets.lookup(meta_table, @post_list)
       post_list = post_list ++ [post.slug]
+
       :ets.insert(post_table, {post.slug, post})
       :ets.insert(meta_table, {@post_list, post_list})
+
+      for keyword <- post.keywords do
+        tag_post_list =
+          case :ets.lookup(meta_table, keyword) do
+            [{_, list}] when is_list(list) -> list
+            _ -> []
+          end
+        tag_post_list = tag_post_list ++ [post.slug]
+        :ets.insert(meta_table, {keyword, tag_post_list})
+      end
     end
   end
 end
