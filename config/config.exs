@@ -10,7 +10,7 @@ config :blog, Blog.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "8VbcTXt2Y4OStipecUyJqUyHQ9SnkWyvG8SQLtyg5F3aOmAgNIfE/UELutXNIKli",
   render_errors: [view: Blog.ErrorView, accepts: ~w(html json)],
-  supported_locales: ~w(de en),
+  supported_locales: ~w(en de),
   pubsub: [name: Blog.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
