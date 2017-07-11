@@ -19,10 +19,6 @@ defmodule Blog.Cache do
     get_page(page)
   end
 
-  def update(_file) do
-    :ok
-  end
-
   def get(slug) do
     case GenServer.call(__MODULE__, {:get, slug}) do
       [] -> {:not_found}
@@ -44,7 +40,7 @@ defmodule Blog.Cache do
     end
   end
 
-  defp reload(file) do
+  def reload(file) do
     case GenServer.call(__MODULE__, {:reload, file}) do
       :ok -> :ok
       :err -> :err
@@ -60,18 +56,19 @@ defmodule Blog.Cache do
       {:post_dir, post_dir}
     ] = args
 
-    Db.init(%{post_table: post_table, meta_table: meta_table})
+    state = %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}
+    Db.init(state)
+    init_posts(state)
+    {:ok, %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}}
+  end
 
+  defp init_posts(state) do
+    %{post_dir: post_dir} = state
     case Parser.read_dir(post_dir) do
       [] -> nil
       posts when is_list(posts) ->
-        Enum.each(
-          posts,
-          fn(post) -> Db.insert(post, %{post_table: post_table, meta_table: meta_table}) end
-        )
+        Enum.each(posts, fn(post) -> Db.insert(post, state) end)
     end
-
-    {:ok, %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}}
   end
 
   def handle_call({:get, slug}, _from, state) do
@@ -89,7 +86,13 @@ defmodule Blog.Cache do
     {:reply, result, state}
   end
 
-  def handle_call({:get_tag, tag}, _from, state) do
-    {:reply, nil, state}
+  def handle_call({:reload, file}, _from, state) do
+    case Parser.read_file(file) do
+      {:ok, _post} ->
+        Db.flush(state)
+        init_posts(state)
+        {:reply, :ok, state}
+      {:err, nil} -> {:reply, :err, state}
+    end
   end
 end

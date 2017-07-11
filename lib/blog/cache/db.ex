@@ -1,12 +1,23 @@
 defmodule Blog.Cache.Db do
   import Blog.Cache.Models
+  require Logger
 
   @post_list "post_list"
 
   def init(state) do
+    Logger.debug("Initializing Blog.Cache databases")
     %{post_table: post_table, meta_table: meta_table} = state
     :ets.new(post_table, [:set, :private, :named_table])
     :ets.new(meta_table, [:set, :private, :named_table])
+
+    :ets.insert(meta_table, {@post_list, []})
+  end
+
+  def flush(state) do
+    Logger.debug("Flushing Blog.Cache databases")
+    %{post_table: post_table, meta_table: meta_table} = state
+    :ets.delete_all_objects(post_table)
+    :ets.delete_all_objects(meta_table)
 
     :ets.insert(meta_table, {@post_list, []})
   end
