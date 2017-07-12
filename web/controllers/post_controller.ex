@@ -13,7 +13,7 @@ defmodule Blog.PostController do
 
     case Blog.Cache.get(slug) do
       {:found, post} ->
-        social = %{title: post.title <> " | embik.me", image: Blog.Helpers.get_url <> static_path(conn, "/images/post.jpg"), description: ""}
+        social = %{title: post.title, image: Blog.Helpers.get_url <> static_path(conn, "/images/post.jpg"), description: post.description, url: Blog.Helpers.get_url <> post_path(conn, :post, slug)}
         render(conn, post: post, title: "#{post.title}", social: social)
       _ ->
         conn |> redirect(to: index_path(conn, :index)) |> halt
