@@ -39,7 +39,7 @@ defmodule Blog.Cache.Parser do
           date: Timex.parse!(date, "{YYYY}-{0M}-{0D}"),
           keywords: keywords,
           description: description,
-          text: Earmark.as_html!(content)
+          text: Earmark.as_html!(content, %Earmark.Options{code_class_prefix: "language-"})
         }
 
         {:ok, post}
