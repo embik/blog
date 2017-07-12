@@ -52,7 +52,7 @@ msgstr ""
 
 #: web/templates/layout/app.html.eex:76
 msgid "embik.me uses cookies to ensure general functionality. By browsing this page you agree to the usage of cookies."
-msgstr "embik.me nutzt Cookies um die Funktionalität der Webseite zu gewährleisten. Mit dem fortgesetzen Besuch dieser Webseite erklären Sie sich damit einverstanden."
+msgstr "embik.me nutzt Cookies um die Funktionalität der Webseite zu gewährleisten. Mit dem fortgesetzten Besuch dieser Webseite erklären Sie sich damit einverstanden."
 
 #: web/templates/post/post.html.eex:9
 msgid "published on"
