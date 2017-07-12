@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :blog, Blog.Endpoint,
   http: [port: {:system, "BLOG_PORT"}],
-  url: [host: "embik.me", port: 80],
+  url: [host: "embik.me", port: 443],
   post_folder: {:system, "BLOG_POST_FOLDER"},
   cache_static_manifest: "priv/static/manifest.json"
 
