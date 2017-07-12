@@ -1,5 +1,6 @@
 defmodule Blog.Cache.Parser do
   alias Blog.Cache.Models.Post
+  require Logger
 
   def read_dir(dir) do
     files = Path.wildcard(dir <> "/*.md")
@@ -19,9 +20,17 @@ defmodule Blog.Cache.Parser do
       {:ok, result} ->
         [meta, content] = String.split(result, "---", parts: 2)
 
+        meta = YamlElixir.read_from_string(meta)
+
+        # Required meta information
         %{"title" => title,
           "keywords" => keywords,
-          "date" => date} = YamlElixir.read_from_string(meta)
+          "date" => date,
+          "description" => description} = meta
+
+        if String.length(description) > 200 do
+          Logger.warn("Post description has exceeded allowed length.\n  File: #{file}\n  Description: #{description}")
+        end
 
         post = %Post{
           slug: gen_slug(title),
@@ -29,6 +38,7 @@ defmodule Blog.Cache.Parser do
           file: file,
           date: Timex.parse!(date, "{YYYY}-{0M}-{0D}"),
           keywords: keywords,
+          description: description,
           text: Earmark.as_html!(content)
         }
 

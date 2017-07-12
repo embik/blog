@@ -5,6 +5,7 @@ defmodule Blog.Cache.Models do
       file: nil,
       date: nil,
       keywords: [],
+      description: nil,
       text: nil
   end
 
