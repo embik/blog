@@ -14,8 +14,11 @@ use Mix.Config
 config :blog, Blog.Endpoint,
   http: [port: {:system, "BLOG_PORT"}],
   url: [host: "embik.me", port: 443],
-  post_folder: {:system, "BLOG_POST_FOLDER"},
-  cache_static_manifest: "priv/static/manifest.json"
+  post_folder: System.get_env("BLOG_POST_FOLDER"),
+  root: ".",
+  server: true,
+  cache_static_manifest: "priv/static/manifest.json",
+  version: Mix.Project.config[:version]
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -25,7 +28,7 @@ config :logger, level: :info
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start the server for all endpoints:
 #
-#     config :phoenix, :serve_endpoints, true
+config :phoenix, :serve_endpoints, true
 #
 # Alternatively, you can configure exactly which server to
 # start per endpoint:

@@ -4,7 +4,7 @@ defmodule Blog.Mixfile do
   def project do
     [app: :blog,
      version: "0.0.1",
-     elixir: "~> 1.2",
+     elixir: "~> 1.4",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -17,7 +17,7 @@ defmodule Blog.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Blog, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :exfswatch, :yaml_elixir, :timex]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :exfswatch, :yaml_elixir, :timex, :earmark]]
   end
 
   # Specifies which paths to compile per environment.
@@ -37,6 +37,7 @@ defmodule Blog.Mixfile do
      {:earmark, "~> 1.2.2"},
      {:exfswatch, "~> 0.4.2"},
      {:yaml_elixir, "~> 1.3.0"},
-     {:timex,  "~> 3.1.17"}]
+     {:timex,  "~> 3.1.17"},
+     {:exrm, "~> 1.0"}]
   end
 end
