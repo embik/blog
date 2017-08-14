@@ -10,7 +10,7 @@
     <meta name="page-topic" content="Blog">
 
     <%= if assigns[:social] do %>
-      <%= render(Blog.LayoutView, "social.html", social: @social) %>
+      <%= render(BlogWeb.LayoutView, "social.html", social: @social) %>
     <% end %>
     <title><%= if assigns[:title] do %><%= @title %><% else %><%= gettext("Personal blog on computers, FOSS and Linux.") %> | Marvin Beckers<% end %> | embik.me</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
