@@ -1,16 +1,20 @@
-# Blog
+# embik's blog
+
+This is a simple blog application written for [embik.me](https://embik.me) (will be available sooner or later). At the moment you might not want to use it for yourself without any further changes.
+
+## Up and running
 
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
+  * Install Node.js dependencies with `cd assets && npm install`
+  * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
-## Learn more
+## Learn more about Phoenix
 
   * Official website: http://www.phoenixframework.org/
   * Guides: http://phoenixframework.org/docs/overview
