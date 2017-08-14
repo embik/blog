@@ -1,5 +1,13 @@
-<%= for post <- @posts do %>
-  <%= render(BlogWeb.PostView, "post.html", conn: @conn, post: post) %>
+<%= if @posts == [] do %>
+  <div class="section">
+    <div class="container content has-text-centered is-serif">
+      <p><%= gettext("There is nothing here yet! Why don't you come back later?") %></p>
+    </div>
+  </div>
+<% else %>
+  <%= for post <- @posts do %>
+    <%= render(BlogWeb.PostView, "post.html", conn: @conn, post: post) %>
+  <% end %>
 <% end %>
 
 <aside class="section">
