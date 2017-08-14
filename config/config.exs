@@ -6,10 +6,10 @@
 use Mix.Config
 
 # Configures the endpoint
-config :blog, Blog.Endpoint,
+config :blog, BlogWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "8VbcTXt2Y4OStipecUyJqUyHQ9SnkWyvG8SQLtyg5F3aOmAgNIfE/UELutXNIKli",
-  render_errors: [view: Blog.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: BlogWeb.ErrorView, accepts: ~w(html json)],
   supported_locales: ~w(en de),
   pubsub: [name: Blog.PubSub,
            adapter: Phoenix.PubSub.PG2]

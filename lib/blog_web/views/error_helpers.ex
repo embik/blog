@@ -1,4 +1,4 @@
-defmodule Blog.ErrorHelpers do
+defmodule BlogWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """

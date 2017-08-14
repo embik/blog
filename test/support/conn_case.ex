@@ -1,4 +1,4 @@
-defmodule Blog.ConnCase do
+defmodule BlogWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,10 +20,10 @@ defmodule Blog.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      import Blog.Router.Helpers
+      import BlogWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Blog.Endpoint
+      @endpoint BlogWeb.Endpoint
     end
   end
 

@@ -1,4 +1,4 @@
-defmodule Blog.Gettext do
+defmodule BlogWeb.Gettext do
   @moduledoc """
   A module providing Internationalization with a gettext-based API.
 

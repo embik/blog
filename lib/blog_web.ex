@@ -1,4 +1,4 @@
-defmodule Blog.Web do
+defmodule BlogWeb do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
@@ -24,16 +24,17 @@ defmodule Blog.Web do
 
   def controller do
     quote do
-      use Phoenix.Controller
+      use Phoenix.Controller, namespace: BlogWeb
 
-      import Blog.Router.Helpers
-      import Blog.Gettext
+      import BlogWeb.Router.Helpers
+      import BlogWeb.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
+      use Phoenix.View, root: "lib/blog_web/templates",
+                        namespace: BlogWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -41,9 +42,9 @@ defmodule Blog.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Blog.Router.Helpers
-      import Blog.ErrorHelpers
-      import Blog.Gettext
+      import BlogWeb.Router.Helpers
+      import BlogWeb.ErrorHelpers
+      import BlogWeb.Gettext
 
       import Timex, only: [format!: 2]
     end
@@ -58,7 +59,7 @@ defmodule Blog.Web do
   def channel do
     quote do
       use Phoenix.Channel
-      import Blog.Gettext
+      import BlogWeb.Gettext
     end
   end
 

@@ -17,7 +17,7 @@ config :blog, Blog.Endpoint,
   post_folder: System.get_env("BLOG_POST_FOLDER"),
   root: ".",
   server: true,
-  cache_static_manifest: "priv/static/manifest.json",
+  cache_static_manifest: "priv/static/cache_manifest.json",
   version: Mix.Project.config[:version]
 
 # Do not print debug messages in production

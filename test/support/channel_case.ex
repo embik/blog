@@ -1,4 +1,4 @@
-defmodule Blog.ChannelCase do
+defmodule BlogWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -22,7 +22,7 @@ defmodule Blog.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint Blog.Endpoint
+      @endpoint BlogWeb.Endpoint
     end
   end
 

@@ -1,5 +1,5 @@
-defmodule Blog.PostController do
-  use Blog.Web, :controller
+defmodule BlogWeb.PostController do
+  use BlogWeb, :controller
 
   @validator ~r/^[a-z-0-9]+$/i
 

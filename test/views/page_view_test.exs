@@ -1,3 +1,3 @@
 defmodule Blog.PageViewTest do
-  use Blog.ConnCase, async: true
+  use BlogWeb.ConnCase, async: true
 end

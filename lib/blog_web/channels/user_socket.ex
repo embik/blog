@@ -1,4 +1,4 @@
-defmodule Blog.UserSocket do
+defmodule BlogWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels

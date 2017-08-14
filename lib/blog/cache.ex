@@ -11,7 +11,7 @@ defmodule Blog.Cache do
     GenServer.start_link(__MODULE__, [
         {:post_table, :post_cache_table},
         {:meta_table, :meta_table},
-        {:post_dir, Application.get_env(:blog, Blog.Endpoint)[:post_folder]}
+        {:post_dir, Application.get_env(:blog, BlogWeb.Endpoint)[:post_folder]}
       ], opts)
   end
 

@@ -1,5 +1,5 @@
-defmodule Blog.Router do
-  use Blog.Web, :router
+defmodule BlogWeb.Router do
+  use BlogWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -7,14 +7,14 @@ defmodule Blog.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Blog.Plug.Locale, "en"
+    #plug Blog.Plug.Locale, "en"
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/", Blog do
+  scope "/", BlogWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", IndexController, :index

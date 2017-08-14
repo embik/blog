@@ -1,5 +1,5 @@
-defmodule Blog.PageController do
-  use Blog.Web, :controller
+defmodule BlogWeb.PageController do
+  use BlogWeb, :controller
 
   def imprint(conn, _params) do
     conn

@@ -1,5 +1,5 @@
-defmodule Blog.IndexController do
-  use Blog.Web, :controller
+defmodule BlogWeb.IndexController do
+  use BlogWeb, :controller
 
   def index(conn, _params) do
     {posts, pages} = Blog.Cache.get_page(1)

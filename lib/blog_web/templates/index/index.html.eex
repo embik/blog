@@ -1,5 +1,5 @@
 <%= for post <- @posts do %>
-  <%= render(Blog.PostView, "post.html", conn: @conn, post: post) %>
+  <%= render(BlogWeb.PostView, "post.html", conn: @conn, post: post) %>
 <% end %>
 
 <aside class="section">
