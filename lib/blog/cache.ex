@@ -57,13 +57,15 @@ defmodule Blog.Cache do
     ] = args
 
     state = %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}
+
     Db.init(state)
     init_posts(state)
-    {:ok, %{post_table: post_table, meta_table: meta_table, post_dir: post_dir}}
+    {:ok, state}
   end
 
   defp init_posts(state) do
     %{post_dir: post_dir} = state
+
     case Parser.read_dir(post_dir) do
       [] -> nil
       posts when is_list(posts) ->
