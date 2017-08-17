@@ -34,10 +34,10 @@ defmodule Blog.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:earmark, "~> 1.2.2"},
+     {:earmark, "~> 1.2"},
      {:exfswatch, "~> 0.4.2"},
-     {:yaml_elixir, "~> 1.3.0"},
-     {:timex,  "~> 3.1.17"},
+     {:yaml_elixir, "~> 1.3"},
+     {:timex,  "~> 3.1"},
      {:exrm, "~> 1.0"}]
   end
 end
