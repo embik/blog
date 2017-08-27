@@ -38,6 +38,6 @@ defmodule Blog.Mixfile do
      {:exfswatch, "~> 0.4.2"},
      {:yaml_elixir, "~> 1.3"},
      {:timex,  "~> 3.1"},
-     {:exrm, "~> 1.0"}]
+     {:distillery, "~> 1.5", runtime: false}]
   end
 end

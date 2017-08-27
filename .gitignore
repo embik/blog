@@ -5,7 +5,7 @@
 /*.ez
 
 # Build artifacts
-/rel
+#/rel
 
 # Generated on crash by the VM
 erl_crash.dump
