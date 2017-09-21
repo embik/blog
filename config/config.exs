@@ -12,7 +12,11 @@ config :blog, BlogWeb.Endpoint,
   render_errors: [view: BlogWeb.ErrorView, accepts: ~w(html json)],
   supported_locales: ~w(en de),
   pubsub: [name: Blog.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2],
+  show_cookie_notice: false,
+  blogger_name: "Max Mustermann",
+  blog_tagline: "Just some blog on tech",
+  imprint_text: "Imprint text to comply with local law"
 
 # Configures Elixir's Logger
 config :logger, :console,

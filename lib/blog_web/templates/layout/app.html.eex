@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="author" content="Marvin Beckers">
-    <meta name="description" content="Personal blog on computers, FOSS and Linux.">
+    <meta name="author" content="<%= Application.get_env(:blog, BlogWeb.Endpoint)[:blogger_name] %>">
+    <meta name="description" content="<%= Application.get_env(:blog, BlogWeb.Endpoint)[:blog_tagline] %>">
     <meta name="page-topic" content="Blog">
 
     <%= if assigns[:social] do %>
       <%= render(BlogWeb.LayoutView, "social.html", social: @social) %>
     <% end %>
-    <title><%= if assigns[:title] do %><%= @title %><% else %><%= gettext("Personal blog on computers, FOSS and Linux.") %> | Marvin Beckers<% end %> | embik.me</title>
+    <title><%= if assigns[:title] do %><%= @title %><% else %><%= Application.get_env(:blog, BlogWeb.Endpoint)[:blog_tagline] %> | <%= Application.get_env(:blog, BlogWeb.Endpoint)[:blogger_name] %><% end %> | <%= Application.get_env(:blog, BlogWeb.Endpoint)[:url][:host] %></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -20,8 +20,8 @@
     <header class="hero is-light is-medium">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <a href="<%= index_path(@conn, :index) %>"><h1 class="title">Marvin Beckers</h1></a>
-          <h2 class="subtitle"><%= gettext("Personal blog on computers, FOSS and Linux.") %></h2>
+          <a href="<%= index_path(@conn, :index) %>"><h1 class="title"><%= Application.get_env(:blog, BlogWeb.Endpoint)[:blogger_name] %></h1></a>
+          <h2 class="subtitle"><%= Application.get_env(:blog, BlogWeb.Endpoint)[:blog_tagline] %></h2>
           <nav class="button-group">
             <a class="button" href="https://keybase.io/embik">
               <span class="svg">
@@ -75,6 +75,7 @@
         </nav>
       </div>
     </footer>
+    <% if Application.get_env(:blog, BlogWeb.Endpoint)[:show_cookie_notice] do %>
     <script type="text/javascript">
       if (document.cookie.indexOf("cookie-agreement=") < 0) {
         var div = document.createElement("div");
@@ -106,6 +107,7 @@
         <a class="button is-small is-inverted is-outlined is-info"><%= gettext("See Privacy Statement") %></a>
       </div>
     </noscript>
+  <% end %>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
